@@ -37,3 +37,12 @@ def ingest_csv(file_path: Path) -> None:
     # Insert data into the database
     with get_conn() as conn:
         df.to_sql("metrics", conn, if_exists="append", index=False)
+
+if __name__ == "__main__":
+    import sys
+    if len(sys.argv) != 2:
+        print("Usage: python -m app.ingest <path_to_csv>")
+        raise SystemExit(1)
+
+    rows = ingest_csv(Path(sys.argv[1]))
+    print(f"Ingested {rows} rows")
