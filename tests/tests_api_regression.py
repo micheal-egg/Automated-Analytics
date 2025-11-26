@@ -44,3 +44,13 @@ def test_revenue_do_not_regress_more_than_10_percent(client):
 
     assert d1["total_revenue"] > 0, "DAY1 total_revenue should be > 0 for this regression test to pass"
     assert d2["total_revenue"] >= d1["total_revenue"] * 0.90
+
+def test_avg_rating_does_not_shift_more_than_point_3(client):
+    """
+    Regression rule:
+    - avg_rating should not shift wildly day-to-day..
+    """
+    d1 = _get_summary(client, DAY1)
+    d2 = _get_summary(client, DAY2)
+
+    assert abs(d2["avg_rating"] - d1["avg_rating"]) <= 0.30
