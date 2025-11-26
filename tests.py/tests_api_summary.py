@@ -60,4 +60,10 @@ def test_daily_summary_value_ranges(client):
     assert data["total_revenue"] >= 0
     assert 1.0 <= data["avg_rating"] <= 5.0
 
-
+def test_daily_summary_unknown_date_returns_404(client):
+    """
+    Verify correct behavior for missing data.
+    If the date doesn't exist in DB, return 404 (not found).
+    """
+    res = client.get("/metrics/daily-summary?date=2099-01-01")
+    assert res.status_code == 404
